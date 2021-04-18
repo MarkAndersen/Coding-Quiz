@@ -21,16 +21,15 @@ var submit = document.querySelector(".submitBtn");
 var initSubmit = document.querySelector(".highscore");
 var results = document.querySelector(".results");
 var renderedLeaderboard = document.querySelector(".leaderboard");
+var list = document.querySelector(".result-list");
 var gameEnd = false;
-// var leaderBoard = [];
-
+var leaderBoard = [];
 var questionCounter = 0;
 var timeLeft = 60;
 var penalty = 0;
 var userScore;
 
-
-
+//function called when start button is pressed
 function startGame() {
     gameEnd = false;
     timeLeft = 60;
@@ -40,8 +39,8 @@ function startGame() {
     startButton.setAttribute("class", "hidden");
     countdown();
     firstQuestion();
-
 }
+//function called when answers are submitted, checking if the answer was correct, scoring, and moving on to the next display and question
 function checkAnswer(event) {
     event.preventDefault();
     var confirmEl = event.target;
@@ -59,6 +58,7 @@ function checkAnswer(event) {
         };
     };
 }
+//function called to move on to the next question, I know there are better ways to do this and the questions themselves below
 function nextQuestion() {
     questionCounter++;
     if (questionCounter === 1) {
@@ -71,8 +71,8 @@ function nextQuestion() {
         fifthQuestion();
     };
 }
+//the following five functions are my questions, a convoluted and inefficient mess, I had a hard time with multi dimensional arrays.
 function firstQuestion() {
-    // console.log("im running!");
     questionEl.textContent = questions[0];
     answerEl1.textContent = answerKey1[0];
     answerEl2.textContent = answerKey1[1];
@@ -81,7 +81,6 @@ function firstQuestion() {
     answerEl1.setAttribute("data-bool", "true");
 }
 function secondQuestion() {
-    // console.log("im running2!");
     answerEl1.setAttribute("data-bool", "false")
     questionEl.textContent = questions[1];
     answerEl1.textContent = answerKey2[0];
@@ -91,7 +90,6 @@ function secondQuestion() {
     answerEl3.setAttribute("data-bool", "true");
 }
 function thirdQuestion() {
-    // console.log("im running3!");
     answerEl2.setAttribute("data-bool", "false")
     questionEl.textContent = questions[2];
     answerEl1.textContent = answerKey3[0];
@@ -101,7 +99,6 @@ function thirdQuestion() {
     answerEl4.setAttribute("data-bool", "true");
 }
 function fourthQuestion() {
-    // console.log("im running4!");
     answerEl4.setAttribute("data-bool", "false")
     questionEl.textContent = questions[3];
     answerEl1.textContent = answerKey4[0];
@@ -111,7 +108,6 @@ function fourthQuestion() {
     answerEl1.setAttribute("data-bool", "true");
 }
 function fifthQuestion() {
-    // console.log("im running5!");
     answerEl1.setAttribute("data-bool", "false");
     questionEl.textContent = questions[4];
     answerEl1.textContent = answerKey5[0];
@@ -131,7 +127,7 @@ function endGame() {
         correctConfirm.textContent = "";
     } else return;
 }
-//countdown timer for the function, how do i stop the counter when the game ends?
+//countdown timer for the function
 function countdown() {
     var timeInterval = setInterval(function () {
         if (questionCounter > 4) {
@@ -146,18 +142,20 @@ function countdown() {
         }
     }, 1000);
 }
+//runs when submit button is pressed, scoring the users initials
 function submission() {
     sContainer.setAttribute("class", "hidden");
     var userInitials = initSubmit.value;
     localStorage.setItem("initials", JSON.stringify(userInitials));
     console.log(userInitials);
     renderLeaderboard();
-}
-
+};
+//to help reset the UI when the reset button is pressed
 function clearButton() {
     startButton.removeAttribute("class", "hidden");
     startButton.setAttribute("style", "font-size: 5em;", "height: fit-content;", "margin: auto;");
 }
+//to reset the game
 function resetGame() {
     gameEnd = false;
     questionCounter = 5;
@@ -167,39 +165,32 @@ function resetGame() {
     penalty = 0;
     correctConfirm.textContent = "";
 };
+//attempting to pull data from local storage to display a leader board, had issues with this.
 function renderLeaderboard() {
-    var savedInfo = JSON.parse(localStorage.getItem("initials"));
-    var finalScore = JSON.parse(localStorage.getItem("score"));
-    var finalResults = {initials: savedInfo, score: finalScore}
     results.removeAttribute("class", "hidden");
-    var finalScore = localStorage.getItem("score") || '[]';
-    var leaderBoard = [finalScore, finalResults]
-    leaderBoard.sort((a, b) => b.finalScore - a.finalScore);
+    var getName = JSON.parse(localStorage.getItem("initials"));
+    var getScore = JSON.parse(localStorage.getItem("score"));
+    var finalLeaderboard = {
+        Name: getName,
+        Score: getScore
+    };
+    leaderBoard.push(finalLeaderboard);
+    leaderBoard.sort((a, b) => b.finalLeaderboard.score - a.finalLeaderboard.score);
     leaderBoard.slice(0, 5);
-    localStorage.setItem('highscore', JSON.stringify(leaderBoard));
-    var display = "";
+    localStorage.setItem("leaderboard", JSON.stringify(leaderBoard));
+    list.innerHTML = "";
     for (var i =0; i < leaderBoard.length; i++) {
-        
-        display += "<li>" + leaderBoard[i] + "</li>";
+        var board = leaderBoard[i];
+        var li = document.createElement("li");
+        li.textContent = board;
+        list.appendChild(li);
+        }
+        document.querySelector(".results-list").innerHTML = list;
+        console.log(leaderBoard)
     }
-    document.querySelector(".results-list").innerHTML = display;
 
-    
-    console.log(leaderBoard)
-
-}
-
-    
-    
-    // leaderBoard.push(finalScore);
-    // leaderBoard.sort();
-    // console.log(leaderBoard);
-    // renderedLeaderboard.textContent = savedInfo + "" + leaderBoard;
-
-
+//event listeners
 startButton.addEventListener("click", startGame);
 resetButton.addEventListener("click", resetGame);
 answerEl.addEventListener("click", checkAnswer);
 submit.addEventListener("click", submission);
-//TODO: create input with initials and store time left and initials locally
-//TODO: reset the quiz

@@ -1,11 +1,18 @@
 * {
-    background-color: coral;
+    background-color: seagreen;
+    color: whitesmoke;
+    font-weight: bold;
 }
 
 p {
     color: whitesmoke;
     text-align: center;
     font-size: xx-large;
+}
+
+input {
+    background-color: snow;
+    color: black;
 }
 button {
     background-color: transparent;
@@ -58,17 +65,6 @@ header {
     justify-content: space-around;
     font-size: 5em;
     height: fit-content;
-    /* margin: 0 20%; */
-}
-.highscore-container {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-}
-.highscore {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
 }
 .hidden {
     display: none;
