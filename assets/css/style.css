@@ -3,14 +3,73 @@
 }
 
 p {
-    color: cornflowerblue;
+    color: whitesmoke;
     text-align: center;
+    font-size: xx-large;
+}
+button {
+    background-color: transparent;
 }
 header {
-    background-color: cornsilk;
+    background-color: transparent;
     width: 100%
     ;
 }
 .quizContainer {
     background-color: crimson;
+}
+.question {
+    font-weight: bolder;
+    font-size: xx-large;
+    text-align: center;
+}
+.answers {
+    display: flex;
+    flex-direction: column;
+}
+.btn {
+    height: fit-content;
+    margin: 20px 20%;
+    font-size:  xx-large;
+}
+.btn:hover {
+    filter: brightness(150%);
+    opacity: 100%;
+}
+.buttons {
+    display: flex;
+    justify-content: center;   
+}
+.reset-button:hover {
+    filter: brightness(150%);
+    opacity: 100%;
+}
+.start-button:hover {
+    filter: brightness(150%);
+    opacity: 100%;
+}
+.reset-button {
+    justify-content: space-around;
+    font-size: 5em;
+    height: fit-content;
+    /* margin: 0 20%; */
+}
+.start-button {
+    justify-content: space-around;
+    font-size: 5em;
+    height: fit-content;
+    /* margin: 0 20%; */
+}
+.highscore-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+.highscore {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+.hidden {
+    display: none;
 }
